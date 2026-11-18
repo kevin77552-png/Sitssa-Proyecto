@@ -1,0 +1,27 @@
+<?php
+
+use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Support\Facades\Route;
+use Livewire\Volt\Volt;
+
+// Rutas de autenticación guests (login, registro y recuperación de contraseña).
+Route::middleware('guest')->group(function () {
+    Route::get('login', [LoginController::class, 'showLoginForm'])
+        ->name('login');
+
+    Route::post('login', [LoginController::class, 'login']);
+
+    Volt::route('register', 'pages.auth.register')
+        ->name('register');
+
+    Volt::route('forgot-password', 'pages.auth.forgot-password')
+        ->name('password.request');
+
+    Volt::route('reset-password/{token}', 'pages.auth.reset-password')
+        ->name('password.reset');
+});
+
+Route::middleware('auth')->group(function () {
+    Volt::route('confirm-password', 'pages.auth.confirm-password')
+        ->name('password.confirm');
+});
